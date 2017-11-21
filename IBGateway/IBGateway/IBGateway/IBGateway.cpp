@@ -1,3 +1,4 @@
+#include"StdAfx.h"
 #include"IBGateway.h"
 IBGateway::IBGateway(EventEngine *eventengine) :JSGateway(eventengine)
 {
@@ -15,7 +16,7 @@ IBGateway::~IBGateway()
 
 void IBGateway::connect()
 {
-
+	m_ibapispi->connect("127.0.0.1", 7497, 0);
 }
 
 void IBGateway::subscribe(const jsstructs::SubscribeReq& subscribeReq)
@@ -44,7 +45,7 @@ void IBGateway::qryPosition()
 
 void IBGateway::close()
 {
-
+	m_ibapispi->disconnect();
 }
 
 void IBGateway::writeLog(const std::string &msg)

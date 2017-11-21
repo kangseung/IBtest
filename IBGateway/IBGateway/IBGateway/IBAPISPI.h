@@ -7,6 +7,8 @@
 #include "EReader.h"
 
 #include <memory>
+#include <functional>
+#include <thread>
 #include <vector>
 
 #include"IBGateway.h"
@@ -176,8 +178,13 @@ public:
 	void softDollarTiers(int reqId, const std::vector<SoftDollarTier> &tiers);
 
 
+
+	void run();
+
 private:
 	IBGateway *m_ibgateway=nullptr;
+
+	std::thread *m_queueWorker=nullptr;
 
 	OrderId m_orderId;
 	State m_state;

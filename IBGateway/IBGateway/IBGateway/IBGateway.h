@@ -1,5 +1,6 @@
 #ifndef IBGATEWAY_H
 #define IBGATEWAY_H
+#include "StdAfx.h"
 #include "jsgateway.hpp"
 #include "eventengine.h"
 #include "IBAPISPI.h"

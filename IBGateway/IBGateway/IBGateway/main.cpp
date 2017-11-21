@@ -1,3 +1,4 @@
+#include"StdAfx.h"
 #include"IBGateway.h"
 int main()
 {
@@ -5,7 +6,10 @@ int main()
 	//´´½¨gateway
 	IBGateway ibgateway(&eventengine);
 
+	ibgateway.connect();
+
 	system("pause");
 
+	ibgateway.close();
 	return 0;
 }

@@ -42,6 +42,69 @@
     <ClCompile Include="..\..\include\eventengine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ContractCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultEWrapper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EClientSocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EDecoder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EMessage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EMutex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EReader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EReaderOSSignal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EReaderWMSignal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ESocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="executioncondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarginCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PercentChangeCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PriceCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftDollarTier.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VolumeCondition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IBGateway.h">
@@ -68,5 +131,124 @@
     <ClInclude Include="ScannerSubscriptionSamples.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CommissionReport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonDefs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Contract.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ContractCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultEWrapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EClient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EClientMsgSink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EClientSocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EDecoder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EMessage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EMutex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EPosixClientSocketPlatform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EReader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EReaderOSSignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EReaderSignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EReaderWMSignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ESocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ETransport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EWrapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Execution.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="executioncondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IExternalizable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarginCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatorCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Order.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderState.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PercentChangeCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PriceCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ScannerSubscription.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="shared_ptr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoftDollarTier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TagValue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TwsSocketClientErrors.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VolumeCondition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TwsSocketClient.def">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

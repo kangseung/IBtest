@@ -47,11 +47,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;TWSAPIDLL;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;TWSAPIDLL;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\project\IBtest\IBGateway\include\client;D:\project\IBtest\IBGateway\include\ssl;D:\project\IBtest\IBGateway\include\jsinclude;D:\project\IBtest\IBGateway\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -84,22 +83,84 @@
     <ClCompile Include="..\..\include\eventengine.cpp" />
     <ClCompile Include="AccountSummaryTags.cpp" />
     <ClCompile Include="AvailableAlgoParams.cpp" />
+    <ClCompile Include="ContractCondition.cpp" />
     <ClCompile Include="ContractSamples.cpp" />
+    <ClCompile Include="DefaultEWrapper.cpp" />
+    <ClCompile Include="EClient.cpp" />
+    <ClCompile Include="EClientSocket.cpp" />
+    <ClCompile Include="EDecoder.cpp" />
+    <ClCompile Include="EMessage.cpp" />
+    <ClCompile Include="EMutex.cpp" />
+    <ClCompile Include="EReader.cpp" />
+    <ClCompile Include="EReaderOSSignal.cpp" />
+    <ClCompile Include="EReaderWMSignal.cpp" />
+    <ClCompile Include="ESocket.cpp" />
+    <ClCompile Include="executioncondition.cpp" />
     <ClCompile Include="IBAPISPI.cpp" />
     <ClCompile Include="IBGateway.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MarginCondition.cpp" />
+    <ClCompile Include="OperatorCondition.cpp" />
+    <ClCompile Include="OrderCondition.cpp" />
     <ClCompile Include="OrderSamples.cpp" />
+    <ClCompile Include="PercentChangeCondition.cpp" />
+    <ClCompile Include="PriceCondition.cpp" />
     <ClCompile Include="ScannerSubscriptionSamples.cpp" />
+    <ClCompile Include="SoftDollarTier.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="TimeCondition.cpp" />
+    <ClCompile Include="VolumeCondition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AccountSummaryTags.h" />
     <ClInclude Include="AvailableAlgoParams.h" />
+    <ClInclude Include="CommissionReport.h" />
+    <ClInclude Include="CommonDefs.h" />
+    <ClInclude Include="Contract.h" />
+    <ClInclude Include="ContractCondition.h" />
     <ClInclude Include="ContractSamples.h" />
+    <ClInclude Include="DefaultEWrapper.h" />
+    <ClInclude Include="EClient.h" />
+    <ClInclude Include="EClientMsgSink.h" />
+    <ClInclude Include="EClientSocket.h" />
+    <ClInclude Include="EDecoder.h" />
+    <ClInclude Include="EMessage.h" />
+    <ClInclude Include="EMutex.h" />
+    <ClInclude Include="EPosixClientSocketPlatform.h" />
+    <ClInclude Include="EReader.h" />
+    <ClInclude Include="EReaderOSSignal.h" />
+    <ClInclude Include="EReaderSignal.h" />
+    <ClInclude Include="EReaderWMSignal.h" />
+    <ClInclude Include="ESocket.h" />
+    <ClInclude Include="ETransport.h" />
+    <ClInclude Include="EWrapper.h" />
+    <ClInclude Include="Execution.h" />
+    <ClInclude Include="executioncondition.h" />
     <ClInclude Include="FAMethodSamples.h" />
     <ClInclude Include="IBAPISPI.h" />
     <ClInclude Include="IBGateway.h" />
+    <ClInclude Include="IExternalizable.h" />
+    <ClInclude Include="MarginCondition.h" />
+    <ClInclude Include="OperatorCondition.h" />
+    <ClInclude Include="Order.h" />
+    <ClInclude Include="OrderCondition.h" />
     <ClInclude Include="OrderSamples.h" />
+    <ClInclude Include="OrderState.h" />
+    <ClInclude Include="PercentChangeCondition.h" />
+    <ClInclude Include="PriceCondition.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ScannerSubscription.h" />
     <ClInclude Include="ScannerSubscriptionSamples.h" />
+    <ClInclude Include="shared_ptr.h" />
+    <ClInclude Include="SoftDollarTier.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="TagValue.h" />
+    <ClInclude Include="TimeCondition.h" />
+    <ClInclude Include="TwsSocketClientErrors.h" />
+    <ClInclude Include="VolumeCondition.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TwsSocketClient.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

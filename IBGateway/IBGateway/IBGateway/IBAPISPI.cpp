@@ -1,3 +1,5 @@
+#include"StdAfx.h"
+
 #include"IBAPISPI.h"
 
 
@@ -56,6 +58,11 @@ IBAPISPI::~IBAPISPI()
 	{
 		delete m_Client_API;
 	}
+
+	//if (m_queueWorker != NULL)
+	//{
+	//	delete m_queueWorker;
+	//}
 }
 
 bool IBAPISPI::connect(const char *host, unsigned int port, int clientId)
@@ -71,6 +78,9 @@ bool IBAPISPI::connect(const char *host, unsigned int port, int clientId)
 		m_Reader = new EReader(m_Client_API, &m_osSignal);
 
 		m_Reader->start();
+
+		auto f = std::bind(&IBAPISPI::processMessages,this);
+		m_queueWorker = new std::thread(f);
 	}
 	else
 		printf("Cannot connect to %s:%d clientId:%d\n", m_Client_API->host().c_str(), m_Client_API->port(), clientId);
@@ -95,149 +105,153 @@ void IBAPISPI::setConnectOptions(const std::string& connectOptions)
 	m_Client_API->setConnectOptions(connectOptions);
 }
 
-void IBAPISPI::processMessages() {
-	fd_set readSet, writeSet, errorSet;
+void IBAPISPI::processMessages()
+{
+	while (m_Client_API->isConnected())
+	{
+		fd_set readSet, writeSet, errorSet;
 
-	struct timeval tval;
-	tval.tv_usec = 0;
-	tval.tv_sec = 0;
+		struct timeval tval;
+		tval.tv_usec = 0;
+		tval.tv_sec = 0;
 
-	time_t now = time(NULL);
+		time_t now = time(NULL);
 
-	/*****************************************************************/
-	/* Below are few quick-to-test examples on the IB API functions grouped by functionality. Uncomment the relevant methods. */
-	/*****************************************************************/
-	switch (m_state) {
-	case ST_TICKDATAOPERATION:
-		tickDataOperation();
-		break;
-	case ST_TICKDATAOPERATION_ACK:
-		break;
-	case ST_MARKETDEPTHOPERATION:
-		marketDepthOperations();
-		break;
-	case ST_MARKETDEPTHOPERATION_ACK:
-		break;
-	case ST_REALTIMEBARS:
-		realTimeBars();
-		break;
-	case ST_REALTIMEBARS_ACK:
-		break;
-	case ST_MARKETDATATYPE:
-		marketDataType();
-		break;
-	case ST_MARKETDATATYPE_ACK:
-		break;
-	case ST_HISTORICALDATAREQUESTS:
-		historicalDataRequests();
-		break;
-	case ST_HISTORICALDATAREQUESTS_ACK:
-		break;
-	case ST_OPTIONSOPERATIONS:
-		optionsOperations();
-		break;
-	case ST_OPTIONSOPERATIONS_ACK:
-		break;
-	case ST_CONTRACTOPERATION:
-		contractOperations();
-		break;
-	case ST_CONTRACTOPERATION_ACK:
-		break;
-	case ST_MARKETSCANNERS:
-		marketScanners();
-		break;
-	case ST_MARKETSCANNERS_ACK:
-		break;
-	case ST_REUTERSFUNDAMENTALS:
-		reutersFundamentals();
-		break;
-	case ST_REUTERSFUNDAMENTALS_ACK:
-		break;
-	case ST_BULLETINS:
-		bulletins();
-		break;
-	case ST_BULLETINS_ACK:
-		break;
-	case ST_ACCOUNTOPERATIONS:
-		accountOperations();
-		break;
-	case ST_ACCOUNTOPERATIONS_ACK:
-		break;
-	case ST_ORDEROPERATIONS:
-		orderOperations();
-		break;
-	case ST_ORDEROPERATIONS_ACK:
-		break;
-	case ST_OCASAMPLES:
-		ocaSamples();
-		break;
-	case ST_OCASAMPLES_ACK:
-		break;
-	case ST_CONDITIONSAMPLES:
-		conditionSamples();
-		break;
-	case ST_CONDITIONSAMPLES_ACK:
-		break;
-	case ST_BRACKETSAMPLES:
-		bracketSample();
-		break;
-	case ST_BRACKETSAMPLES_ACK:
-		break;
-	case ST_HEDGESAMPLES:
-		hedgeSample();
-		break;
-	case ST_HEDGESAMPLES_ACK:
-		break;
-	case ST_TESTALGOSAMPLES:
-		testAlgoSamples();
-		break;
-	case ST_TESTALGOSAMPLES_ACK:
-		break;
-	case ST_FAORDERSAMPLES:
-		financialAdvisorOrderSamples();
-		break;
-	case ST_FAORDERSAMPLES_ACK:
-		break;
-	case ST_FAOPERATIONS:
-		financialAdvisorOperations();
-		break;
-	case ST_FAOPERATIONS_ACK:
-		break;
-	case ST_DISPLAYGROUPS:
-		testDisplayGroups();
-		break;
-	case ST_DISPLAYGROUPS_ACK:
-		break;
-	case ST_MISCELANEOUS:
-		miscelaneous();
-		break;
-	case ST_MISCELANEOUS_ACK:
-		break;
-	case ST_PING:
-		reqCurrentTime();
-		break;
-	case ST_PING_ACK:
-		if (m_sleepDeadline < now) {
-			disconnect();
-			return;
+		/*****************************************************************/
+		/* Below are few quick-to-test examples on the IB API functions grouped by functionality. Uncomment the relevant methods. */
+		/*****************************************************************/
+		switch (m_state) {
+		case ST_TICKDATAOPERATION:
+			tickDataOperation();
+			break;
+		case ST_TICKDATAOPERATION_ACK:
+			break;
+		case ST_MARKETDEPTHOPERATION:
+			marketDepthOperations();
+			break;
+		case ST_MARKETDEPTHOPERATION_ACK:
+			break;
+		case ST_REALTIMEBARS:
+			realTimeBars();
+			break;
+		case ST_REALTIMEBARS_ACK:
+			break;
+		case ST_MARKETDATATYPE:
+			marketDataType();
+			break;
+		case ST_MARKETDATATYPE_ACK:
+			break;
+		case ST_HISTORICALDATAREQUESTS:
+			historicalDataRequests();
+			break;
+		case ST_HISTORICALDATAREQUESTS_ACK:
+			break;
+		case ST_OPTIONSOPERATIONS:
+			optionsOperations();
+			break;
+		case ST_OPTIONSOPERATIONS_ACK:
+			break;
+		case ST_CONTRACTOPERATION:
+			contractOperations();
+			break;
+		case ST_CONTRACTOPERATION_ACK:
+			break;
+		case ST_MARKETSCANNERS:
+			marketScanners();
+			break;
+		case ST_MARKETSCANNERS_ACK:
+			break;
+		case ST_REUTERSFUNDAMENTALS:
+			reutersFundamentals();
+			break;
+		case ST_REUTERSFUNDAMENTALS_ACK:
+			break;
+		case ST_BULLETINS:
+			bulletins();
+			break;
+		case ST_BULLETINS_ACK:
+			break;
+		case ST_ACCOUNTOPERATIONS:
+			accountOperations();
+			break;
+		case ST_ACCOUNTOPERATIONS_ACK:
+			break;
+		case ST_ORDEROPERATIONS:
+			orderOperations();
+			break;
+		case ST_ORDEROPERATIONS_ACK:
+			break;
+		case ST_OCASAMPLES:
+			ocaSamples();
+			break;
+		case ST_OCASAMPLES_ACK:
+			break;
+		case ST_CONDITIONSAMPLES:
+			conditionSamples();
+			break;
+		case ST_CONDITIONSAMPLES_ACK:
+			break;
+		case ST_BRACKETSAMPLES:
+			bracketSample();
+			break;
+		case ST_BRACKETSAMPLES_ACK:
+			break;
+		case ST_HEDGESAMPLES:
+			hedgeSample();
+			break;
+		case ST_HEDGESAMPLES_ACK:
+			break;
+		case ST_TESTALGOSAMPLES:
+			testAlgoSamples();
+			break;
+		case ST_TESTALGOSAMPLES_ACK:
+			break;
+		case ST_FAORDERSAMPLES:
+			financialAdvisorOrderSamples();
+			break;
+		case ST_FAORDERSAMPLES_ACK:
+			break;
+		case ST_FAOPERATIONS:
+			financialAdvisorOperations();
+			break;
+		case ST_FAOPERATIONS_ACK:
+			break;
+		case ST_DISPLAYGROUPS:
+			testDisplayGroups();
+			break;
+		case ST_DISPLAYGROUPS_ACK:
+			break;
+		case ST_MISCELANEOUS:
+			miscelaneous();
+			break;
+		case ST_MISCELANEOUS_ACK:
+			break;
+		case ST_PING:
+			reqCurrentTime();
+			break;
+		case ST_PING_ACK:
+			if (m_sleepDeadline < now) {
+				disconnect();
+				return;
+			}
+			break;
+		case ST_IDLE:
+			if (m_sleepDeadline < now) {
+				m_state = ST_PING;
+				return;
+			}
+			break;
 		}
-		break;
-	case ST_IDLE:
-		if (m_sleepDeadline < now) {
-			m_state = ST_PING;
-			return;
+
+		if (m_sleepDeadline > 0) {
+			// initialize timeout with m_sleepDeadline - now
+			tval.tv_sec = m_sleepDeadline - now;
 		}
-		break;
-	}
 
-	if (m_sleepDeadline > 0) {
-		// initialize timeout with m_sleepDeadline - now
-		tval.tv_sec = m_sleepDeadline - now;
+		m_Reader->checkClient();
+		m_osSignal.waitForSignal();
+		m_Reader->processMsgs();
 	}
-
-	m_Reader->checkClient();
-	m_osSignal.waitForSignal();
-	m_Reader->processMsgs();
 }
 
 //////////////////////////////////////////////////////////////////
