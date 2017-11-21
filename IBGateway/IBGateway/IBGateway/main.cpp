@@ -1,8 +1,9 @@
 #include"IBGateway.h"
 int main()
 {
+	EventEngine eventengine;
 	//´´½¨gateway
-	IBGateway ibgateway;
+	IBGateway ibgateway(&eventengine);
 
 	system("pause");
 
