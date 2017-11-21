@@ -46,7 +46,8 @@ IBAPISPI::IBAPISPI(IBGateway *ibgateway)
 {
 	this->m_ibgateway = ibgateway;
 	m_osSignal = 2000;//2-seconds timeout;
-	m_Client_API = new EClientSocket(this, &m_osSignal);
+	esocket = new ESocket;
+	m_Client_API = new EClientSocket(this, esocket, &m_osSignal);
 	m_extraAuth = false; //是否额外验证？ 估计大概是验证码之类的玩意儿
 	m_sleepDeadline = 0;//可能是判断掉线用的？
 	m_orderId = 0;//long 型 
@@ -59,10 +60,10 @@ IBAPISPI::~IBAPISPI()
 		delete m_Client_API;
 	}
 
-	//if (m_queueWorker != NULL)
-	//{
-	//	delete m_queueWorker;
-	//}
+	if (esocket != NULL)
+	{
+		delete esocket;
+	}
 }
 
 bool IBAPISPI::connect(const char *host, unsigned int port, int clientId)
@@ -92,6 +93,16 @@ void IBAPISPI::disconnect() const
 {
 	m_Client_API->eDisconnect();
 
+	if (m_queueWorker != NULL)
+	{
+		m_queueWorker->join();
+		delete m_queueWorker;
+	}
+
+	if (m_Reader != NULL)
+	{
+		delete m_Reader;
+	}
 	printf("Disconnected\n");
 }
 

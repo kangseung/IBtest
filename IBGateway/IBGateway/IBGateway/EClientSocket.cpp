@@ -22,12 +22,13 @@ const int MIN_SERVER_VER_SUPPORTED    = 38; //all supported server versions are 
 
 ///////////////////////////////////////////////////////////
 // member funcs
-EClientSocket::EClientSocket(EWrapper *ptr, EReaderSignal *pSignal) : EClient( ptr, new ESocket())
+EClientSocket::EClientSocket(EWrapper *ptr, ESocket* esocket,EReaderSignal *pSignal) : EClient(ptr, esocket)
 {
 	m_fd = SocketsInit() ? -1 : -2;
     m_allowRedirect = false;
     m_asyncEConnect = false;
     m_pSignal = pSignal;
+
 }
 
 EClientSocket::~EClientSocket()
@@ -75,9 +76,9 @@ bool EClientSocket::eConnect( const char *host, unsigned int port, int clientId,
 }
 
 ESocket *EClientSocket::getTransport() {
-    assert(dynamic_cast<ESocket*>(m_transport.get()) != 0);
+    assert(dynamic_cast<ESocket*>(m_transport) != 0);
 
-    return static_cast<ESocket*>(m_transport.get());
+    return static_cast<ESocket*>(m_transport);
 }
 
 bool EClientSocket::eConnectImpl(int clientId, bool extraAuth, ConnState* stateOutPt)

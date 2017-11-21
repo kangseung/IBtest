@@ -347,7 +347,7 @@ protected:
 protected:
 
 	EWrapper *m_pEWrapper;
-    std::auto_ptr<ETransport> m_transport;
+    ETransport* m_transport;
 
 private:
 	BytesVec m_inBuffer;

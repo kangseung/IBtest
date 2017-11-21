@@ -5,6 +5,7 @@
 #include "EWrapper.h"
 #include "EReaderOSSignal.h"
 #include "EReader.h"
+#include "ESocket.h"
 
 #include <memory>
 #include <functional>
@@ -194,5 +195,6 @@ private:
 	EReader* m_Reader = nullptr;
 
 	EClientSocket *m_Client_API=nullptr;
+	ESocket *esocket = nullptr;
 };
 #endif

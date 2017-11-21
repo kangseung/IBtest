@@ -89,6 +89,7 @@ EClient::EClient( EWrapper *ptr, ETransport *pTransport)
 
 EClient::~EClient()
 {
+	
 }
 
 EClient::ConnState EClient::connState() const

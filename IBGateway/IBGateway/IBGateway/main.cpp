@@ -1,5 +1,6 @@
 #include"StdAfx.h"
 #include"IBGateway.h"
+#include"vld.h"
 int main()
 {
 	EventEngine eventengine;

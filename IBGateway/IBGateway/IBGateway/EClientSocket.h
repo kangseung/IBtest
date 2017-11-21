@@ -21,7 +21,7 @@ protected:
 
 public:
 
-	explicit EClientSocket(EWrapper *ptr, EReaderSignal *pSignal = 0);
+	explicit EClientSocket(EWrapper *ptr, ESocket* esocket ,EReaderSignal *pSignal = 0);
 	~EClientSocket();
 
 	bool eConnect( const char *host, unsigned int port, int clientId = 0, bool extraAuth = false);
@@ -35,7 +35,6 @@ public:
     ESocket *getTransport();
 
 private:
-
 	bool eConnectImpl(int clientId, bool extraAuth, ConnState* stateOutPt);
 
 private:
