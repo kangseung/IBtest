@@ -524,3 +524,13 @@ Contract ContractSamples::MTbroadtapeNewsFeed()
 	//! [newscontractmt]
 	return contract;
 }
+
+Contract ContractSamples::GOLD()
+{
+	Contract contract; 
+	contract.secType = "FUT";
+	contract.currency = "USD";
+	contract.exchange = "NYMEX";  
+	contract.localSymbol = "GCV7";
+	return contract;
+}

@@ -84,9 +84,9 @@ jsstructs::CancelOrderReq IBGateway::getOrder(const std::string &orderID)
 	return req;
 }
 
-void IBGateway::reqHistoryData(const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting)
+void IBGateway::reqHistoryData(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting)
 {
-	m_ibapispi->historicalDataRequests(contract, durationStr, barSizeSetting);
+	m_ibapispi->historicalDataRequests(symbol,contract, durationStr, barSizeSetting);
 }
 
 void IBGateway::onHistoricalData(std::shared_ptr<Event_Bar>e)

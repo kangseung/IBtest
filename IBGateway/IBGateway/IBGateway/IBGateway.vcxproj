@@ -69,18 +69,21 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;TWSAPIDLL;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\project\IBtest\IBGateway\include\client;D:\project\IBtest\IBGateway\include\ssl;D:\project\IBtest\IBGateway\include\jsinclude;D:\project\IBtest\IBGateway\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>D:\project\IBtest\IBGateway\include\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\eventengine.cpp" />
+    <ClCompile Include="..\..\include\jsinclude\utils.cpp" />
     <ClCompile Include="AccountSummaryTags.cpp" />
     <ClCompile Include="AvailableAlgoParams.cpp" />
     <ClCompile Include="ContractCondition.cpp" />

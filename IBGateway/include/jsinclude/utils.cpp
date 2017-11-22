@@ -318,7 +318,7 @@ std::string Utils::getPWD()
 {
 #ifdef WIN32
     char   buffer[MAX_PATH];
-    getcwd(buffer, MAX_PATH);
+    _getcwd(buffer, MAX_PATH);
     std::string s=buffer;
     return s+"/";
 #else

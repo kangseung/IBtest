@@ -81,7 +81,7 @@ public:
 	bool connect(const char * host, unsigned int port, int clientId = 0);
 	void disconnect() const;
 
-	void historicalDataRequests(const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting); // 请求历史数据
+	void historicalDataRequests(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting); // 请求历史数据
 
 private:
 	void tickDataOperation();

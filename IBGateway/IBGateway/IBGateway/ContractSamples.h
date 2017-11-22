@@ -40,6 +40,7 @@ public:
 	static Contract BZbroadtapeNewsFeed();
 	static Contract FLYbroadtapeNewsFeed();
 	static Contract MTbroadtapeNewsFeed();
+	static Contract GOLD();
 };
 
 #endif

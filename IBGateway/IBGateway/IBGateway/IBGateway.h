@@ -28,8 +28,8 @@ public:
 	jsstructs::CancelOrderReq getOrder(const std::string &orderID);                                 //ªÒ»°order
 
 	//IBAPI
-	void reqHistoryData(const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting);
-
+	void reqHistoryData(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting);
+	void reqHeadTimestamp();
 
 	//IBSPI
 	void onHistoricalData(std::shared_ptr<Event_Bar>e);

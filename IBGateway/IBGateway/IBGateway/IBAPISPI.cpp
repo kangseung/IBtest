@@ -38,6 +38,9 @@
 #include <iostream>
 #include <thread>
 #include <ctime>
+#include <vector>
+#include <string>
+#include "utils.h"
 
 const int PING_DEADLINE = 2; // seconds
 const int SLEEP_BETWEEN_PINGS = 30; // seconds
@@ -233,7 +236,7 @@ void IBAPISPI::marketDataType()
 	m_state = ST_MARKETDATATYPE_ACK;
 }
 
-void IBAPISPI::historicalDataRequests(const Contract& contract,const std::string& durationStr,const std::string&  barSizeSetting)
+void IBAPISPI::historicalDataRequests(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting)
 {
 	/*** Requesting historical data ***/
 	//! [reqhistoricaldata]
@@ -248,7 +251,7 @@ void IBAPISPI::historicalDataRequests(const Contract& contract,const std::string
 	TickerId id = m_tickerId++;
 
 	m_Client_API->reqHistoricalData(id, contract, queryTime, durationStr, barSizeSetting, "TRADES", 1, 1, TagValueListSPtr());//(id, contract, queryTime, "1 M", "1 day", "MIDPOINT", 1, 1, TagValueListSPtr());
-	m_tickerID_mapping_symbol[id] = contract.symbol;
+	m_tickerID_mapping_symbol[id] = symbol;
 
 	/*** Canceling historical data requests ***/
 	//m_Client_API->cancelHistoricalData(4001);
@@ -919,10 +922,14 @@ void IBAPISPI::historicalData(TickerId reqId, const std::string& date, double op
 	bar.low = low;
 	bar.close = close;
 	bar.volume = volume;
-	bar.date = date;
+	if (date.find("  ") != std::string::npos)
+	{
+		std::vector<std::string>datetime=Utils::split(date, "  ");
+		bar.date = datetime[0];
+		bar.time = datetime[1];
+	}
 	e->bar = bar;
 	m_ibgateway->onHistoricalData(e);
-	printf("HistoricalData. ReqId: %ld - Date: %s, Open: %g, High: %g, Low: %g, Close: %g, Volume: %d, Count: %d, WAP: %g, HasGaps: %d\n", reqId, date.c_str(), open, high, low, close, volume, barCount, WAP, hasGaps);
 }
 //! [historicaldata]
 
