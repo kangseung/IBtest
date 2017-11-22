@@ -73,20 +73,22 @@ public:
 	IBAPISPI(IBGateway *ibgateway);
 	~IBAPISPI();
 
-
 	void setConnectOptions(const std::string&);
 	void processMessages();
-
+	bool isConnected() const;
+	
+	//公共接口API
 	bool connect(const char * host, unsigned int port, int clientId = 0);
 	void disconnect() const;
-	bool isConnected() const;
+
+	void historicalDataRequests(const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting); // 请求历史数据
 
 private:
 	void tickDataOperation();
 	void marketDepthOperations();
 	void realTimeBars();
 	void marketDataType();
-	void historicalDataRequests();
+	
 	void optionsOperations();
 	void accountOperations();
 	void orderOperations();
@@ -107,7 +109,7 @@ private:
 	void reqCurrentTime();
 
 public:
-	// events
+	// SPI
 	void tickPrice(TickerId tickerId, TickType field, double price, int canAutoExecute);
 	void tickSize(TickerId tickerId, TickType field, int size);
 	void tickOptionComputation(TickerId tickerId, TickType tickType, double impliedVol, double delta,
@@ -188,6 +190,8 @@ private:
 	std::thread *m_queueWorker=nullptr;
 
 	OrderId m_orderId;
+	TickerId m_tickerId;
+
 	State m_state;
 	time_t m_sleepDeadline;
 	bool m_extraAuth;
@@ -196,5 +200,9 @@ private:
 
 	EClientSocket *m_Client_API=nullptr;
 	ESocket *esocket = nullptr;
+
+	std::map<long, std::string>m_tickerID_mapping_symbol;
+
+
 };
 #endif

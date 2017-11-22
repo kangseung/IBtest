@@ -120,145 +120,6 @@ void IBAPISPI::processMessages()
 {
 	while (m_Client_API->isConnected())
 	{
-		fd_set readSet, writeSet, errorSet;
-
-		struct timeval tval;
-		tval.tv_usec = 0;
-		tval.tv_sec = 0;
-
-		time_t now = time(NULL);
-
-		/*****************************************************************/
-		/* Below are few quick-to-test examples on the IB API functions grouped by functionality. Uncomment the relevant methods. */
-		/*****************************************************************/
-		switch (m_state) {
-		case ST_TICKDATAOPERATION:
-			tickDataOperation();
-			break;
-		case ST_TICKDATAOPERATION_ACK:
-			break;
-		case ST_MARKETDEPTHOPERATION:
-			marketDepthOperations();
-			break;
-		case ST_MARKETDEPTHOPERATION_ACK:
-			break;
-		case ST_REALTIMEBARS:
-			realTimeBars();
-			break;
-		case ST_REALTIMEBARS_ACK:
-			break;
-		case ST_MARKETDATATYPE:
-			marketDataType();
-			break;
-		case ST_MARKETDATATYPE_ACK:
-			break;
-		case ST_HISTORICALDATAREQUESTS:
-			historicalDataRequests();
-			break;
-		case ST_HISTORICALDATAREQUESTS_ACK:
-			break;
-		case ST_OPTIONSOPERATIONS:
-			optionsOperations();
-			break;
-		case ST_OPTIONSOPERATIONS_ACK:
-			break;
-		case ST_CONTRACTOPERATION:
-			contractOperations();
-			break;
-		case ST_CONTRACTOPERATION_ACK:
-			break;
-		case ST_MARKETSCANNERS:
-			marketScanners();
-			break;
-		case ST_MARKETSCANNERS_ACK:
-			break;
-		case ST_REUTERSFUNDAMENTALS:
-			reutersFundamentals();
-			break;
-		case ST_REUTERSFUNDAMENTALS_ACK:
-			break;
-		case ST_BULLETINS:
-			bulletins();
-			break;
-		case ST_BULLETINS_ACK:
-			break;
-		case ST_ACCOUNTOPERATIONS:
-			accountOperations();
-			break;
-		case ST_ACCOUNTOPERATIONS_ACK:
-			break;
-		case ST_ORDEROPERATIONS:
-			orderOperations();
-			break;
-		case ST_ORDEROPERATIONS_ACK:
-			break;
-		case ST_OCASAMPLES:
-			ocaSamples();
-			break;
-		case ST_OCASAMPLES_ACK:
-			break;
-		case ST_CONDITIONSAMPLES:
-			conditionSamples();
-			break;
-		case ST_CONDITIONSAMPLES_ACK:
-			break;
-		case ST_BRACKETSAMPLES:
-			bracketSample();
-			break;
-		case ST_BRACKETSAMPLES_ACK:
-			break;
-		case ST_HEDGESAMPLES:
-			hedgeSample();
-			break;
-		case ST_HEDGESAMPLES_ACK:
-			break;
-		case ST_TESTALGOSAMPLES:
-			testAlgoSamples();
-			break;
-		case ST_TESTALGOSAMPLES_ACK:
-			break;
-		case ST_FAORDERSAMPLES:
-			financialAdvisorOrderSamples();
-			break;
-		case ST_FAORDERSAMPLES_ACK:
-			break;
-		case ST_FAOPERATIONS:
-			financialAdvisorOperations();
-			break;
-		case ST_FAOPERATIONS_ACK:
-			break;
-		case ST_DISPLAYGROUPS:
-			testDisplayGroups();
-			break;
-		case ST_DISPLAYGROUPS_ACK:
-			break;
-		case ST_MISCELANEOUS:
-			miscelaneous();
-			break;
-		case ST_MISCELANEOUS_ACK:
-			break;
-		case ST_PING:
-			reqCurrentTime();
-			break;
-		case ST_PING_ACK:
-			if (m_sleepDeadline < now) {
-				disconnect();
-				return;
-			}
-			break;
-		case ST_IDLE:
-			if (m_sleepDeadline < now) {
-				m_state = ST_PING;
-				return;
-			}
-			break;
-		}
-
-		if (m_sleepDeadline > 0) {
-			// initialize timeout with m_sleepDeadline - now
-			tval.tv_sec = m_sleepDeadline - now;
-		}
-
 		m_Reader->checkClient();
 		m_osSignal.waitForSignal();
 		m_Reader->processMsgs();
@@ -372,7 +233,7 @@ void IBAPISPI::marketDataType()
 	m_state = ST_MARKETDATATYPE_ACK;
 }
 
-void IBAPISPI::historicalDataRequests()
+void IBAPISPI::historicalDataRequests(const Contract& contract,const std::string& durationStr,const std::string&  barSizeSetting)
 {
 	/*** Requesting historical data ***/
 	//! [reqhistoricaldata]
@@ -384,15 +245,14 @@ void IBAPISPI::historicalDataRequests()
 	timeinfo = std::localtime(&rawtime);
 	std::strftime(queryTime, 80, "%Y%m%d %H:%M:%S", timeinfo);
 
-	m_Client_API->reqHistoricalData(4001, ContractSamples::EurGbpFx(), queryTime, "1 M", "1 day", "MIDPOINT", 1, 1, TagValueListSPtr());
-	m_Client_API->reqHistoricalData(4002, ContractSamples::EuropeanStock(), queryTime, "10 D", "1 min", "TRADES", 1, 1, TagValueListSPtr());
-	//! [reqhistoricaldata]
-	sleep(2);
-	/*** Canceling historical data requests ***/
-	m_Client_API->cancelHistoricalData(4001);
-	m_Client_API->cancelHistoricalData(4002);
+	TickerId id = m_tickerId++;
 
-	m_state = ST_HISTORICALDATAREQUESTS_ACK;
+	m_Client_API->reqHistoricalData(id, contract, queryTime, durationStr, barSizeSetting, "TRADES", 1, 1, TagValueListSPtr());//(id, contract, queryTime, "1 M", "1 day", "MIDPOINT", 1, 1, TagValueListSPtr());
+	m_tickerID_mapping_symbol[id] = contract.symbol;
+
+	/*** Canceling historical data requests ***/
+	//m_Client_API->cancelHistoricalData(4001);
+	//m_Client_API->cancelHistoricalData(4002);
 }
 
 void IBAPISPI::optionsOperations()
@@ -865,7 +725,7 @@ void IBAPISPI::nextValidId(OrderId orderId)
 	//m_state = ST_MARKETSCANNERS;
 	//m_state = ST_REUTERSFUNDAMENTALS;
 	//m_state = ST_BULLETINS;
-	m_state = ST_ACCOUNTOPERATIONS;
+	//m_state = ST_ACCOUNTOPERATIONS;
 	//m_state = ST_ORDEROPERATIONS;
 	//m_state = ST_OCASAMPLES;
 	//m_state = ST_CONDITIONSAMPLES;
@@ -1051,6 +911,17 @@ void IBAPISPI::receiveFA(faDataType pFaDataType, const std::string& cxml) {
 //! [historicaldata]
 void IBAPISPI::historicalData(TickerId reqId, const std::string& date, double open, double high,
 	double low, double close, int volume, int barCount, double WAP, int hasGaps) {
+	std::shared_ptr<Event_Bar>e = std::make_shared<Event_Bar>();
+	jsstructs::BarData bar;
+	bar.symbol = m_tickerID_mapping_symbol[reqId];
+	bar.open = open;
+	bar.high = high;
+	bar.low = low;
+	bar.close = close;
+	bar.volume = volume;
+	bar.date = date;
+	e->bar = bar;
+	m_ibgateway->onHistoricalData(e);
 	printf("HistoricalData. ReqId: %ld - Date: %s, Open: %g, High: %g, Low: %g, Close: %g, Volume: %d, Count: %d, WAP: %g, HasGaps: %d\n", reqId, date.c_str(), open, high, low, close, volume, barCount, WAP, hasGaps);
 }
 //! [historicaldata]
