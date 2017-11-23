@@ -82,11 +82,14 @@ public:
 	void disconnect() const;
 
 	void historicalDataRequests(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting); // 请求历史数据
+	void realTimeBars(const std::string &symbol, const Contract&contract, int barSize);
+
+
 
 private:
 	void tickDataOperation();
 	void marketDepthOperations();
-	void realTimeBars();
+	
 	void marketDataType();
 	
 	void optionsOperations();

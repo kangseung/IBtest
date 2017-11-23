@@ -30,7 +30,7 @@ int main()
 
 	system("pause");
 
-	ibgateway.reqHistoryData(ContractSamples::GOLD().localSymbol, ContractSamples::GOLD(), "100 D", "5 mins");
+	ibgateway.realTimeBars(ContractSamples::EurGbpFx().symbol, ContractSamples::EurGbpFx(), 5);
 
 	system("pause");
 	ibgateway.close();

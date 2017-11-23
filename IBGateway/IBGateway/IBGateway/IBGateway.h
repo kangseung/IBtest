@@ -29,10 +29,11 @@ public:
 
 	//IBAPI
 	void reqHistoryData(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting);
-	void reqHeadTimestamp();
+	void realTimeBars(const std::string &symbol, const Contract&contract, int barSize);
 
 	//IBSPI
 	void onHistoricalData(std::shared_ptr<Event_Bar>e);
+	void onTimeBarsData(std::shared_ptr<Event_Bar>e);
 private:
 
 

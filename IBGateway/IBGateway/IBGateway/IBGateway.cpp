@@ -89,7 +89,17 @@ void IBGateway::reqHistoryData(const std::string &symbol,const Contract& contrac
 	m_ibapispi->historicalDataRequests(symbol,contract, durationStr, barSizeSetting);
 }
 
+void IBGateway::realTimeBars(const std::string &symbol, const Contract&contract, int barSize)
+{
+	m_ibapispi->realTimeBars(symbol, contract, barSize);
+}
+
 void IBGateway::onHistoricalData(std::shared_ptr<Event_Bar>e)
+{
+	m_eventengine->put(e);
+}
+
+void IBGateway::onTimeBarsData(std::shared_ptr<Event_Bar>e)
 {
 	m_eventengine->put(e);
 }

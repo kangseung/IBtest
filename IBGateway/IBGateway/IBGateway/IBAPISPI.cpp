@@ -83,7 +83,7 @@ bool IBAPISPI::connect(const char *host, unsigned int port, int clientId)
 
 		m_Reader->start();
 
-		auto f = std::bind(&IBAPISPI::processMessages,this);
+		auto f = std::bind(&IBAPISPI::processMessages, this);
 		m_queueWorker = new std::thread(f);
 	}
 	else
@@ -211,19 +211,11 @@ void IBAPISPI::marketDepthOperations()
 	m_state = ST_MARKETDEPTHOPERATION_ACK;
 }
 
-void IBAPISPI::realTimeBars()
+void IBAPISPI::realTimeBars(const std::string &symbol, const Contract&contract, int barSize)
 {
-	/*** Requesting real time bars ***/
-	//! [reqrealtimebars]
-	m_Client_API->reqRealTimeBars(3001, ContractSamples::EurGbpFx(), 5, "MIDPOINT", true, TagValueListSPtr());
-	//! [reqrealtimebars]
-	sleep(2);
-	/*** Canceling real time bars ***/
-	//! [cancelrealtimebars]
-	m_Client_API->cancelRealTimeBars(3001);
-	//! [cancelrealtimebars]
-
-	m_state = ST_REALTIMEBARS_ACK;
+	TickerId id = m_tickerId++;
+	m_Client_API->reqRealTimeBars(id, contract, barSize, "TRADES", true, TagValueListSPtr());
+	m_tickerID_mapping_symbol[id] = symbol;
 }
 
 void IBAPISPI::marketDataType()
@@ -236,7 +228,7 @@ void IBAPISPI::marketDataType()
 	m_state = ST_MARKETDATATYPE_ACK;
 }
 
-void IBAPISPI::historicalDataRequests(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting)
+void IBAPISPI::historicalDataRequests(const std::string &symbol, const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting)
 {
 	/*** Requesting historical data ***/
 	//! [reqhistoricaldata]
@@ -924,7 +916,7 @@ void IBAPISPI::historicalData(TickerId reqId, const std::string& date, double op
 	bar.volume = volume;
 	if (date.find("  ") != std::string::npos)
 	{
-		std::vector<std::string>datetime=Utils::split(date, "  ");
+		std::vector<std::string>datetime = Utils::split(date, "  ");
 		bar.date = datetime[0];
 		bar.time = datetime[1];
 	}
@@ -956,7 +948,24 @@ void IBAPISPI::scannerDataEnd(int reqId) {
 //! [realtimebar]
 void IBAPISPI::realtimeBar(TickerId reqId, long time, double open, double high, double low, double close,
 	long volume, double wap, int count) {
-	printf("RealTimeBars. %ld - Time: %ld, Open: %g, High: %g, Low: %g, Close: %g, Volume: %ld, Count: %d, WAP: %g\n", reqId, time, open, high, low, close, volume, count, wap);
+
+	std::shared_ptr<Event_Bar>e = std::make_shared<Event_Bar>();
+	jsstructs::BarData bar;
+	bar.symbol = m_tickerID_mapping_symbol[reqId];
+	bar.open = open;
+	bar.high = high;
+	bar.low = low;
+	bar.close = close;
+	bar.volume = volume;
+	/*if (date.find("  ") != std::string::npos)
+	{
+		std::vector<std::string>datetime = Utils::split(date, "  ");
+		bar.date = datetime[0];
+		bar.time = datetime[1];
+	}*/
+	e->bar = bar;
+	m_ibgateway->onHistoricalData(e);
+
 }
 //! [realtimebar]
 
