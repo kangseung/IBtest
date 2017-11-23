@@ -921,7 +921,7 @@ void IBAPISPI::historicalData(TickerId reqId, const std::string& date, double op
 		bar.time = datetime[1];
 	}
 	e->bar = bar;
-	m_ibgateway->onHistoricalData(e);
+	//m_ibgateway->onHistoricalData(e);
 }
 //! [historicaldata]
 
@@ -964,7 +964,7 @@ void IBAPISPI::realtimeBar(TickerId reqId, long time, double open, double high, 
 		bar.time = datetime[1];
 	}*/
 	e->bar = bar;
-	m_ibgateway->onHistoricalData(e);
+	//m_ibgateway->onHistoricalData(e);
 
 }
 //! [realtimebar]

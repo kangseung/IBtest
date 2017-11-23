@@ -26,18 +26,7 @@ public:
 	void initQuery();                                                                               //初始化查询循环
 	void query();                                                                                   //查询
 	jsstructs::CancelOrderReq getOrder(const std::string &orderID);                                 //获取order
-
-	//IBAPI
-	void reqHistoryData(const std::string &symbol,const Contract& contract, const std::string& durationStr, const std::string&  barSizeSetting);
-	void realTimeBars(const std::string &symbol, const Contract&contract, int barSize);
-
-	//IBSPI
-	void onHistoricalData(std::shared_ptr<Event_Bar>e);
-	void onTimeBarsData(std::shared_ptr<Event_Bar>e);
 private:
-
-
-
 	IBAPISPI *m_ibapispi=nullptr;
 };
 #endif
